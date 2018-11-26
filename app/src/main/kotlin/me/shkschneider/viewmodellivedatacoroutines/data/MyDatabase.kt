@@ -24,7 +24,9 @@ abstract class MyDatabase : RoomDatabase() {
         @WorkerThread
         fun get(context: Context): MyDatabase {
             if (INSTANCE == null) {
-                INSTANCE = Room.inMemoryDatabaseBuilder(context.applicationContext, MyDatabase::class.java)
+                INSTANCE = Room
+                    .inMemoryDatabaseBuilder(context.applicationContext, MyDatabase::class.java)
+                    .fallbackToDestructiveMigration()
                     .build()
             }
             return INSTANCE!!

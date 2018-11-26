@@ -5,11 +5,6 @@ import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import me.shkschneider.viewmodellivedatacoroutines.data.MyDatabase
 import me.shkschneider.viewmodellivedatacoroutines.data.Notification
 import me.shkschneider.viewmodellivedatacoroutines.data.Project
 import me.shkschneider.viewmodellivedatacoroutines.data.User
@@ -23,11 +18,10 @@ class MainViewModel : ViewModel() {
     fun getUsers(context: Context): LiveData<List<User>> {
         if (!::users.isInitialized) {
             users = MutableLiveData()
-            GlobalScope.launch(Dispatchers.Main) {
-                val usersFromDb: List<User> = async(Dispatchers.IO) {
-                    return@async MyDatabase.get(context).users().getAll()
-                }.await()
-                users.postValue(usersFromDb)
+            Coroutines.ioThenMain({
+                DataManager.getUsers(context)
+            }) {
+                users.postValue(it)
             }
         }
         return users
@@ -39,11 +33,10 @@ class MainViewModel : ViewModel() {
     fun getProjects(context: Context): LiveData<List<Project>> {
         if (!::projects.isInitialized) {
             projects = MutableLiveData()
-            GlobalScope.launch(Dispatchers.Main) {
-                val projectsFromDb: List<Project> = async(Dispatchers.IO) {
-                    return@async MyDatabase.get(context).projects().getAll()
-                }.await()
-                projects.postValue(projectsFromDb)
+            Coroutines.ioThenMain({
+                DataManager.getProjects(context)
+            }) {
+                projects.postValue(it)
             }
         }
         return projects
@@ -55,11 +48,10 @@ class MainViewModel : ViewModel() {
     fun getNotifications(context: Context): LiveData<List<Notification>> {
         if (!::notifications.isInitialized) {
             notifications = MutableLiveData()
-            GlobalScope.launch(Dispatchers.Main) {
-                val notificationsFromDb: List<Notification> = async(Dispatchers.IO) {
-                    return@async MyDatabase.get(context).notifications().getAll()
-                }.await()
-                notifications.postValue(notificationsFromDb)
+            Coroutines.ioThenMain({
+                DataManager.getNotifications(context)
+            }) {
+                notifications.postValue(it)
             }
         }
         return notifications

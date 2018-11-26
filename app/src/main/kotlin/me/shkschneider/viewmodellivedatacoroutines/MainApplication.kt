@@ -1,8 +1,6 @@
 package me.shkschneider.viewmodellivedatacoroutines
 
 import android.app.Application
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import me.shkschneider.viewmodellivedatacoroutines.data.MyDatabase
 
 @Suppress("unused")
@@ -11,9 +9,11 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        GlobalScope.launch {
+        Coroutines.io {
             MyDatabase.get(applicationContext).clearAllTables()
-            DataManager.dummy(applicationContext)
+            if (BuildConfig.DEBUG) {
+                DataManager.dummy(applicationContext)
+            }
         }
     }
 
