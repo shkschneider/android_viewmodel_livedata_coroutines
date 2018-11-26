@@ -1,6 +1,7 @@
 package me.shkschneider.viewmodellivedatacoroutines.data
 
 import android.content.Context
+import androidx.annotation.WorkerThread
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -20,10 +21,10 @@ abstract class MyDatabase : RoomDatabase() {
 
         private var INSTANCE: MyDatabase? = null
 
+        @WorkerThread
         fun get(context: Context): MyDatabase {
             if (INSTANCE == null) {
                 INSTANCE = Room.inMemoryDatabaseBuilder(context.applicationContext, MyDatabase::class.java)
-                    .allowMainThreadQueries() // FIXME never do this (coroutines to come)
                     .build()
             }
             return INSTANCE!!
