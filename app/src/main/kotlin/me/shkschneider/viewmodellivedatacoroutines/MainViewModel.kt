@@ -10,47 +10,41 @@ import me.shkschneider.viewmodellivedatacoroutines.data.User
 
 class MainViewModel : ViewModel() {
 
-    private lateinit var users: MutableLiveData<List<User>>
+    private val _users = MutableLiveData<List<User>>()
+    val users: LiveData<List<User>> get() = _users
 
     @UiThread
-    fun getUsers(): LiveData<List<User>> {
-        if (!::users.isInitialized) {
-            users = MutableLiveData()
-            Coroutines.ioThenMain({
-                DataManager.getUsers()
-            }) {
-                users.postValue(it)
-            }
+    fun loadUsers(): LiveData<List<User>> {
+        Coroutines.ioThenMain({
+            DataManager.getUsers()
+        }) {
+            _users.value = it
         }
         return users
     }
 
-    private lateinit var projects: MutableLiveData<List<Project>>
+    private val _projects = MutableLiveData<List<Project>>()
+    val projects: LiveData<List<Project>> get() = _projects
 
     @UiThread
-    fun getProjects(): LiveData<List<Project>> {
-        if (!::projects.isInitialized) {
-            projects = MutableLiveData()
-            Coroutines.ioThenMain({
-                DataManager.getProjects()
-            }) {
-                projects.postValue(it)
-            }
+    fun loadProjects(): LiveData<List<Project>> {
+        Coroutines.ioThenMain({
+            DataManager.getProjects()
+        }) {
+            _projects.value = it
         }
         return projects
     }
 
-    private lateinit var notifications: MutableLiveData<List<Notification>>
+    private val _notifications = MutableLiveData<List<Notification>>()
+    val notifications: LiveData<List<Notification>> get() = _notifications
 
     @UiThread
-    fun getNotifications(): LiveData<List<Notification>> {
-        if (!::notifications.isInitialized) {
-            notifications = MutableLiveData()
-            Coroutines.ioThenMain({
-                DataManager.getNotifications()
-            }) {
-                notifications.postValue(it)
-            }
+    fun loadNotifications(): LiveData<List<Notification>> {
+        Coroutines.ioThenMain({
+            DataManager.getNotifications()
+        }) {
+            _notifications.value = it
         }
         return notifications
     }

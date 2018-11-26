@@ -24,26 +24,24 @@ class MainActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navigation_users -> {
-                    viewModel.getUsers().observe(this, Observer {
-                        display(it)
-                    })
-                }
-                R.id.navigation_projects -> {
-                    viewModel.getProjects().observe(this, Observer {
-                        display(it)
-                    })
-                }
-                R.id.navigation_notifications -> {
-                    viewModel.getNotifications().observe(this, Observer {
-                        display(it)
-                    })
-                }
+                R.id.navigation_users -> viewModel.loadUsers()
+                R.id.navigation_projects -> viewModel.loadProjects()
+                R.id.navigation_notifications -> viewModel.loadNotifications()
                 else -> return@OnNavigationItemSelectedListener false
             }
             return@OnNavigationItemSelectedListener true
         })
         navigation.selectedItemId = R.id.navigation_users
+
+        viewModel.users.observe(this, Observer {
+            display(it)
+        })
+        viewModel.projects.observe(this, Observer {
+            display(it)
+        })
+        viewModel.notifications.observe(this, Observer {
+            display(it)
+        })
     }
 
     private fun <T: Any> display(items: T) {
