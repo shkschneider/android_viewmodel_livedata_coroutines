@@ -25,17 +25,17 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_users -> {
-                    viewModel.getUsers().observe(this, Observer {
+                    viewModel.getUsers(applicationContext).observe(this, Observer {
                         display(it)
                     })
                 }
                 R.id.navigation_projects -> {
-                    viewModel.getProjects().observe(this, Observer {
+                    viewModel.getProjects(applicationContext).observe(this, Observer {
                         display(it)
                     })
                 }
                 R.id.navigation_notifications -> {
-                    viewModel.getNotifications().observe(this, Observer {
+                    viewModel.getNotifications(applicationContext).observe(this, Observer {
                         display(it)
                     })
                 }

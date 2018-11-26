@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -43,5 +44,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.0.0'
 
+    implementation 'androidx.room:room-runtime:2.0.0'
+    kapt 'androidx.room:room-compiler:2.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
 }
